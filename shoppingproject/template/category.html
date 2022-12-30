@@ -1,0 +1,76 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block metadescription %}
+  {% if cate %}
+    {{cate.description|truncatewords:200 }}
+  {% else %}
+    Welcome to SREESTORE
+  {% endif %}
+{% endblock %}
+
+{% block title %}
+  {% if cate %}
+    {{cate.name}}-NEWSREE
+  {% else %}
+    New Collections are out...
+  {% endif %}
+{% endblock %}
+
+{% block content %}
+{% if cate %}
+<div>
+  <div class="row my_row">
+    <div class="mx_auto">
+    <a href="{% url 'shopapp:all_product_category' %}">Our products</a>
+  </div>
+</div>
+</div>
+{% endif %}
+<div class="mx_auto">
+  {% if cate %}
+  <img class="my_image" src="{{cate.image.url}}" alt="{{cate.name}}">
+</div>
+<br>
+<div>
+  <h1 class="text-center my_title">{{cate.name}}</h1>
+  <p class="text-justify">{{cate.description}}</p>
+</div>
+  {% else %}
+<div>
+  <img class="my_image_padding" src="{% static 'image/blast.png' %}" alt="Our products" width="1310px" height="500px">
+</div>
+<br>
+<div>
+  <h1 class="text-center my_title">Our New Collections</h1>
+  <p class="text-justify">New Collection believes the right things can give every human a confidence boost and make them feel sassy seven days a week. After all, life is way too short to accept anything less than the best. We only source and hand pick our products from genuine reputable suppliers from around the world.</p>
+</div>
+{% endif %}
+<div class="container">
+  <div class="row mx_auto">
+    {% for i in prod.object_list %}
+    <div class="my_bottom_margin col-9 col-sm-12 col-md-4 xol-lg-4">
+      <div class="card text-center" style="min-width:18rem;">
+        <a href="{{i.get_url}}"><img class="card-img-top my_image" src="{{i.image.url}}" alt="{{prod.name}}"></a>
+        <div class="card-body">
+          <h4>{{i.name}}</h4>
+          <p>{{i.price}}</p>
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+  <div class="mx-auto">
+    {% if prod.paginator.num_pages > 1 %}
+    <hr>
+  <div class="text-center">
+    {% for z in prod.paginator.page_range %}
+    <a href="?page={{z}}" class="btn btn-light btn-sm {% if products.number == z %} active {% endif %}">{{z}}</a>
+    {% endfor %}
+  </div>
+        {% endif %}
+
+  </div>
+
+</div>
+{% endblock %}
+
